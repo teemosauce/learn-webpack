@@ -5,8 +5,9 @@ var webpack = require('webpack'),
 
 module.exports = {
 	entry: {
-		one: __dirname + '/src/pages/one',
-		vendor: ['jquery', 'moment'],
+		// main: __dirname + '/src/main',
+		main: __dirname + '/src/entrys/login/app',
+		vendor: ['react', 'react-dom', 'react-router-dom', 'antd'],
 		// ab: [__dirname + '/src/pages/a', __dirname + '/src/pages/b']
 		// public: [__dirname + '/src/utils/utils.js', __dirname + '/src/utils/common.js']
 	},
@@ -29,9 +30,10 @@ module.exports = {
 		// modules: [
 		// 	'node_modules'
 		// ],
+		extensions: ['.js', '.json', '.jsx', '.css'],
 		alias: {
-			moment: 'moment/min/moment.min.js',
-			jquery: 'jquery/dist/jquery.min.js'
+			// moment: 'moment/min/moment.min.js',
+			// jquery: 'jquery/dist/jquery.min.js'
 		}
 	},
 	module: {
@@ -45,7 +47,12 @@ module.exports = {
 			test: /(\.css)$/,
 			use: ExtractTextPlugin.extract({
 				fallback: 'style-loader',
-				use: ['css-loader', 'postcss-loader']
+				use: [{
+					loader: 'css-loader',
+					options: {
+						minimize: true
+					}
+				}, 'postcss-loader']
 			})
 		}]
 	},
@@ -54,7 +61,6 @@ module.exports = {
 		new CleanWebpackPlugin(['dist']),
 		new webpack.BannerPlugin('版权所有，翻版必究'),
 		new HtmlWebpackPlugin({
-			title: 'Webpack 学习教程',
 			template: './index.html',
 			// filename: 'one.html',
 			// chunks: ['manifest', 'vendors', 'one'],
@@ -68,7 +74,7 @@ module.exports = {
 		// 	// hash: true,
 		// 	// xhtml: true
 		// }),
-		// new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.UglifyJsPlugin(),
 		new ExtractTextPlugin('css/style-[hash:8].css'),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
